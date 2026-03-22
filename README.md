@@ -25,7 +25,8 @@ Anyway, added features:
   - this will upload the `drawing.html` file to your WLED device
 - to call the application just type `/drawing.html` instead of `/edit`: `http://[wled-ip]/drawing.html`
 
-
+## Pixelart
+If you search for something to convert images to this json matrix: https://kno.wled.ge/features/pixel-art-converter/
 
 # ---- Rest from here is original README content ----
 
