@@ -1,0 +1,1211 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>WLED Draw Something</title>
+    <!-- PWA manifest and mobile meta -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <style>button,
+hr,
+input {
+  overflow: visible;
+}
+
+audio,
+canvas,
+progress,
+video {
+  display: inline-block;
+}
+
+progress,
+sub,
+sup {
+  vertical-align: baseline;
+}
+
+html {
+  font-family: system-ui, sans-serif;
+  line-height: 1.15;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  overflow: hidden;
+  touch-action: none;
+}
+
+body {
+  margin: 0;
+  overflow: hidden;
+  touch-action: none;
+}
+
+menu,
+article,
+aside,
+details,
+footer,
+header,
+nav,
+section {
+  display: block;
+}
+
+h1 {
+  font-size: 2em;
+  margin: 0.67em 0;
+}
+
+figcaption,
+figure,
+main {
+  display: block;
+}
+
+figure {
+  margin: 1em 40px;
+}
+
+hr {
+  box-sizing: content-box;
+  height: 0;
+}
+
+code,
+kbd,
+pre,
+samp {
+  font-family: monospace, monospace;
+  font-size: 1em;
+}
+
+a {
+  background-color: transparent;
+  -webkit-text-decoration-skip: objects;
+}
+
+a:active,
+a:hover {
+  outline-width: 0;
+}
+
+abbr[title] {
+  border-bottom: none;
+  text-decoration: underline;
+  -webkit-text-decoration: underline dotted;
+          text-decoration: underline dotted;
+}
+
+b,
+strong {
+  font-weight: bolder;
+}
+
+dfn {
+  font-style: italic;
+}
+
+mark {
+  background-color: #ff0;
+  color: #000;
+}
+
+small {
+  font-size: 80%;
+}
+
+sub,
+sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+}
+
+sub {
+  bottom: -0.25em;
+}
+
+sup {
+  top: -0.5em;
+}
+
+audio:not([controls]) {
+  display: none;
+  height: 0;
+}
+
+img {
+  border-style: none;
+}
+
+svg:not(:root) {
+  overflow: hidden;
+}
+
+button,
+input,
+optgroup,
+select,
+textarea {
+  font-family: sans-serif;
+  font-size: 100%;
+  line-height: 1.15;
+  margin: 0;
+}
+
+button,
+select {
+  text-transform: none;
+}
+
+[type=submit],
+[type=reset],
+button,
+html [type=button] {
+  -webkit-appearance: button;
+}
+
+[type=button]::-moz-focus-inner,
+[type=reset]::-moz-focus-inner,
+[type=submit]::-moz-focus-inner,
+button::-moz-focus-inner {
+  border-style: none;
+  padding: 0;
+}
+
+[type=button]:-moz-focusring,
+[type=reset]:-moz-focusring,
+[type=submit]:-moz-focusring,
+button:-moz-focusring {
+  outline: ButtonText dotted 1px;
+}
+
+fieldset {
+  border: 1px solid silver;
+  margin: 0 2px;
+  padding: 0.35em 0.625em 0.75em;
+}
+
+legend {
+  box-sizing: border-box;
+  color: inherit;
+  display: table;
+  max-width: 100%;
+  padding: 0;
+  white-space: normal;
+}
+
+textarea {
+  overflow: auto;
+}
+
+[type=checkbox],
+[type=radio] {
+  box-sizing: border-box;
+  padding: 0;
+}
+
+[type=number]::-webkit-inner-spin-button,
+[type=number]::-webkit-outer-spin-button {
+  height: auto;
+}
+
+[type=search] {
+  -webkit-appearance: textfield;
+  outline-offset: -2px;
+}
+
+[type=search]::-webkit-search-cancel-button,
+[type=search]::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+
+::-webkit-file-upload-button {
+  -webkit-appearance: button;
+  font: inherit;
+}
+
+summary {
+  display: list-item;
+}
+
+[hidden],
+template {
+  display: none;
+}
+
+body,
+html {
+  font-size: 18px;
+}
+@media screen and (max-width: 999px) {
+  body,
+  html {
+    font-size: 24px;
+  }
+}
+
+a {
+  color: #f53;
+}
+
+body {
+  background-color: #19233b;
+  color: #fff;
+  touch-action: manipulation;
+}
+
+svg {
+  height: 90%;
+  width: 90%;
+  cursor: pointer;
+}
+@media screen and (min-width: 999px) {
+  svg {
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+h1 {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+h4 {
+  margin-top: 0;
+}
+
+label {
+  font-weight: 700;
+  margin-bottom: 10px;
+  display: block;
+}
+
+.alloy-input-flex {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.alloy-input-group {
+  grid-column: 1/span 1;
+  margin-bottom: 15px;
+  width: 100%;
+}
+.alloy-input-group label {
+  display: block;
+}
+.alloy-input-group p {
+  font-size: 0.8rem;
+}
+.alloy-input-group [type=color] {
+  padding: 0;
+  -moz-appearance: none;
+       appearance: none;
+  -webkit-appearance: none;
+  border: 0;
+  border: none;
+  height: 40px;
+  border-radius: 0;
+}
+.alloy-input-group [type=color]::-webkit-color-swatch-wrapper {
+  padding: 3px;
+}
+.alloy-input-group [type=color]::-webkit-color-swatch {
+  border: none;
+}
+
+textarea {
+  font-size: 0.8rem;
+}
+
+textarea,
+input {
+  width: 100%;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding: 5px 10px;
+}
+
+select {
+  width: 100%;
+  -webkit-appearance: none;
+  display: block;
+}
+
+.radioGroup {
+  font-family: "dashicons";
+  display: inline-block;
+  position: relative;
+}
+.radioGroup label {
+  width: 30px;
+  display: inline-block;
+  transition: transform, color;
+  transition-duration: 0.3s;
+  transition-timing-function: ease;
+  font-size: 24px;
+}
+.radioGroup input[type=radio] {
+  position: absolute;
+  left: 0;
+  top: 0;
+  pointer-events: none;
+  opacity: 0;
+}
+.radioGroup input[type=radio]:checked + label {
+  color: #f53;
+  transform: scale(1.4);
+}
+
+.description {
+  font-size: 0.8rem;
+}
+
+select {
+  padding: 10px 15px;
+}
+
+ul {
+  padding: 0;
+  margin: 0;
+  margin-bottom: 30px;
+}
+ul li {
+  list-style: none;
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+@media screen and (min-width: 999px) {
+  #app {
+    flex-direction: row;
+  }
+}
+#app > * {
+  overflow-y: auto;
+}
+
+.view {
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+}
+
+aside {
+  order: 2;
+  color: #fff;
+  background-color: #0c162d;
+}
+@media screen and (min-width: 999px) {
+  aside {
+    flex-shrink: 0;
+    flex-grow: 0;
+    flex-basis: 300px;
+  }
+}
+aside > .inner {
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  padding: 30px;
+  flex-direction: column;
+}
+@media screen and (max-width: 999px) {
+  aside > .inner {
+    flex-flow: row wrap;
+    justify-content: space-between;
+  }
+}
+@media screen and (min-width: 999px) {
+  aside > .inner {
+    gap: 20px;
+    overflow-y: auto;
+    height: 100%;
+  }
+}
+aside .controls {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex-flow: row wrap;
+}
+@media screen and (max-width: 999px) {
+  aside .controls {
+    flex-direction: row;
+    gap: 3%;
+    flex-basis: 100%;
+  }
+  aside .controls > * {
+    flex-basis: 30%;
+  }
+}
+aside .colorPallete {
+  width: 100%;
+}
+aside .optionsToggle {
+  background-color: transparent;
+  text-decoration: underline;
+  padding: 0;
+  text-align: left;
+}
+aside .title {
+  margin-bottom: 10px;
+}
+@media screen and (max-width: 999px) {
+  aside .title {
+    order: -1;
+  }
+}
+aside .title h1 {
+  opacity: 0.7;
+  font-size: 1.7rem;
+}
+aside .title h3 {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  font-weight: normal;
+  transform: translatex(2px) translatey(-5px);
+}
+aside .title h1,
+aside .title h3 {
+  margin: 0;
+}
+@media screen and (max-width: 999px) {
+  aside .title,
+  aside #logo {
+    order: -1;
+    flex-basis: 50%;
+  }
+}
+aside #logo {
+  margin-bottom: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  text-decoration: none;
+}
+@media screen and (max-width: 999px) {
+  aside #logo {
+    justify-content: flex-end;
+  }
+}
+aside #logo img {
+  margin-right: 10px;
+  width: 70px;
+}
+aside #logo span {
+  display: block;
+  font-size: 1rem;
+}
+aside #logo span:last-of-type {
+  font-weight: 700;
+  font-size: 1.4rem;
+}
+
+form {
+  width: 100%;
+}
+
+.input {
+  width: 100%;
+  margin-bottom: 20px;
+}
+.input label {
+  display: block;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+.input label.description {
+  display: inline;
+}
+.input button {
+  width: 49%;
+  margin-bottom: 0;
+  margin: 0 1px;
+}
+.input button:first-child {
+  background-color: #ff6647;
+}
+.input input {
+  width: 100%;
+}
+
+input[type=range] {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 15px;
+  border-radius: 5px;
+  background: #d3d3d3;
+  outline: none;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: #f53;
+  cursor: pointer;
+}
+input[type=range]::-moz-range-thumb {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: #4caf50;
+  cursor: pointer;
+}
+
+input[type=radio],
+input[type=checkbox] {
+  width: auto;
+}
+
+input[type=checkbox] {
+  transform: translateY(6px);
+}
+
+.btn,
+button {
+  width: 100%;
+  padding: 10px;
+  background-color: #f53;
+  color: #fff;
+  font-weight: 700;
+  border: 0;
+  margin-bottom: 20px;
+  transition: transform;
+  transition-duration: 300ms;
+  transition-timing-function: ease;
+}
+.btn:hover,
+button:hover {
+  background-color: #0ba;
+  color: #0c162d;
+}
+
+.btn {
+  background-color: #0ba;
+  color: #0c162d;
+}
+.btn:hover {
+  background-color: #f53;
+  color: #fff;
+}
+
+.btn-alt {
+  background-color: #ccc;
+  color: #0c162d;
+}
+
+button[disabled] {
+  background-color: #ccc;
+  color: #666;
+}
+
+.container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.notice {
+  background-color: #f53;
+  padding: 30px;
+  max-width: 500px;
+}
+
+pre {
+  overflow-x: auto;
+  background-color: #19233b;
+  padding: 10px;
+  font-size: 0.8rem;
+  max-width: 100%;
+  width: 240px;
+}
+
+.back-to-wled {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: auto;
+  text-decoration: none;
+  font-size: 14px;
+}/*# sourceMappingURL=style.css.map */</style>
+	<!-- HTML Meta Tags -->
+<title>WLED Draw Something</title>
+
+<meta name="description" content="A pixel art tool that allows you to draw something and see it live update in your WLED 2D Matrix">
+
+<!-- Facebook Meta Tags -->
+<meta property="og:url" content="https://mvaneijgen.nl/wled-draw-something/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="WLED Draw Something">
+<meta property="og:description" content="A pixel art tool that allows you to draw something and see it live update in your WLED 2D Matrix">
+
+<!-- Twitter Meta Tags -->
+<meta name="twitter:card" content="summary">
+<meta property="twitter:domain" content="mvaneijgen.nl">
+<meta property="twitter:url" content="https://mvaneijgen.nl/wled-draw-something/">
+<meta name="twitter:title" content="WLED Draw Something">
+<meta name="twitter:description" content="A pixel art tool that allows you to draw something and see it live update in your WLED 2D Matrix">
+
+    <link rel="apple-touch-icon" sizes="152x152" href="./assets/favicon/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="./assets/favicon/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="./assets/favicon/favicon-16x16.png">
+<link rel="manifest" href="./assets/favicon/site.webmanifest">
+<link rel="mask-icon" href="./assets/favicon/safari-pinned-tab.svg" color="#0094ff">
+<meta name="msapplication-TileColor" content="#0094ff">
+<meta name="theme-color" content="#0094ff">
+  </head>
+  <body>
+    <div id="app">
+      <!-- Sidebar -->
+      <aside>
+        <div class="inner">
+          <div class="title">
+            <h1>{{ title }}</h1>
+            <h3>Version {{version}}</h3>
+            <p v-if="demo" class="description">Demo mode is activated. For the best use of this tool install it in to your WLED controller, see <a href="https://github.com/mvaneijgen/wled-draw-something#use-the-tool">install guide on Github!</a></p>
+          </div>
+          <a class="btn btn-two back-to-wled" v-if="wledUrl" :href="wledUrl">⬅ Back to WLED</a>
+          <!-- 🎛️ Controls -->
+          <div class="controls">
+            <div class="alloy-input-group">
+              <label for="color">Colors</label>
+              <input type="color" id="color" name="head" v-model.lazy="color">
+            </div>
+
+            <div class="alloy-input-group">
+              <label for="pallete">Color History</label>
+              <svg class="colorPallete" :view-box.camel="viewBoxPallete">
+                <g v-for="(item, yIndex) in yPallete">
+                  <rect v-for="(item, xIndex) in xPallete" :key="xIndex"
+                    :x="size * xIndex" :y="size * yIndex" :width="size"
+                    :height="size" stroke="#0c162d"
+                    :fill="historyPalette[xIndex + xPallete * yIndex]"
+                    @click="changeColor"
+                    :data-number="xIndex + xPallete*yIndex" />
+                </g>
+              </svg>
+            </div>
+
+            <!-- <button @click="post">Send mannualy🚀</button> -->
+            <div class="alloy-input-group">
+              <button class @click="clear">NEW!</button>
+              <button class="btn-alt"
+                @click="options = !options">More ... </button>
+            </div>
+
+            <!-- Advanced settings -->
+            <div class="alloy-input-group" v-if="options">
+              <label for="url">API url</label>
+              <p v-if="demo">You can't use the API on the demo page</p>
+              <input type="text" id="url" v-model="url" :disabled="demo ? '' : disabled">
+            </div>
+            <div class="alloy-input-flex" v-if="options">
+              <div class="alloy-input-group">
+                <label for="xAxis">Matrix W</label>
+                <input type="number" id="xAxis" v-model="x" pattern="[0-9]*" min="1" inputmode="numeric">
+              </div>
+              <div class="alloy-input-group" v-if="options">
+                <label for="yAxis">Matrix H</label>
+                <input type="number" id="yAxis" v-model="y" pattern="[0-9]*" min="1" inputmode="numeric">
+              </div>
+            </div>
+            <div class="alloy-input-group" v-if="options">
+              <label for="timer">Timer (nightlight)</label>
+              <p class="description">Set a nightlight {{timer}} to 0 mintues. If zero no timer would be set.</p>
+              <input type="number" id="timer" v-model="timer" pattern="[0-9]*" inputmode="numeric">
+            </div>
+            <div class="alloy-input-group" v-if="options">
+              <label for="copy">Save Preset</label>
+              <pre id="copy" ref="copy">{{json}}</pre>
+              <p v-if="copiedFailed">Failed to copy, copy manually with right click and "copy".</p>
+              <button @click="copy" ><span v-if="!copied">Copy Preset</span><span v-if="copied">Copied!</span> </button>
+              <div style="margin-top:10px;">
+                <input type="text" v-model="presetFilename" placeholder="Filename (e.g. preset.json)" style="width:70%;margin-bottom:5px;">
+                <button @click="savePreset" class="btn-alt">Save Preset as File</button>
+              </div>
+              <div style="margin-top:10px;">
+                <input type="file" @change="loadPresetFromFile" accept="application/json" style="width:70%;margin-bottom:5px;">
+                <button @click="triggerFileInput" class="btn-alt">Load Preset from File</button>
+              </div>
+            </div>
+            <!-- <div class="alloy-input-group" v-if="options">
+              <label for>Things known about your matrix</label>
+              <ul class="description">
+                <li><strong>URL</strong> {{url}}</li>
+                <li><strong>Matrix width</strong> {{x}}</li>
+                <li><strong>Matrix height</strong> {{y}}</li>
+                <li><strong>Matrix led</strong> {{y * x}}</li>
+                <li><strong>Pixel art amount</strong> {{fill.length}}</li>
+              </ul>
+            </div> -->
+            <!-- Advanced settings -->
+          </div>
+          <!-- 🎛️ END Controls -->
+          <!-- Studio Alloy branding removed -->
+        </div>
+      </aside>
+      <!-- END Sidebar -->
+      <!-- Notifications -->
+      <div class="container" v-if="loading">
+        <div class="notice" v-if="!options">
+          <h3>We're currently loading your settings. Make sure your matrix is setup correclty. <i>Fetching {{url}}</i></h3>
+          <p>If you keep seeing this make sure you update your API endpoint url eg <i>`http://[device_ip_address]/json`</i></p>
+        </div>
+
+        <div class="notice error" v-if="options">
+          <h3>We could not fetch your settings at <i>{{url}}</i></h3>
+          <p>You can change the url manually <input type="text" v-model="url"></p>
+          <p>Or just use the tool without the API connected</p>
+          <button class="btn-alt" @click="ignoreNotice">Just use the tool</button>
+        </div>
+      </div>
+      <!-- END Notifications -->
+      <div class="view" @mousedown="mouseDown" @mouseup="mouseUp"
+      @touchstart="mouseDown" @mouseup="touchend"
+        v-if="!loading">
+        <svg :view-box.camel="viewBox" @touchmove="dragColor">
+          <g v-for="(item, yIndex) in y">
+            <rect v-for="(item, xIndex) in x" :x="size * xIndex"
+              :y="size * yIndex" :width="size" :height="size" stroke="#19233b"
+              :fill="fill[xIndex + x*yIndex]" @mousedown="setColor"
+              @mouseover="dragColor"
+              @contextmenu.prevent="rightClick"
+              :data-number="xIndex + x*yIndex" />
+          </g>
+        </svg>
+      </div>
+    </div>
+    <script src='https://unpkg.com/vue@3/dist/vue.global.js'></script>
+    <script>console.clear();
+const { createApp } = Vue;
+
+const App = {
+  data() {
+    return {
+      // App info
+      title: "Draw something",
+      version: "1.3",
+      // WLED JSON
+      url: "",
+      wledUrl: "",
+      size: 10,
+      x: 16,
+      y: 16,
+      timer: 0,
+      fill: [],
+      // 🎛️ Controls
+      color: "#ff2500",
+      isMouseDown: false,
+      liveUpdateTimer: null,
+      xPallete: 6,
+      yPallete: 4,
+      historyPalette: [ // 🎨 Expanded color palette for 6x4 grid
+        "#ff2500", "#ff9305", "#fdfc00", "#20f80f", "#0533ff", "#ffffff",
+        "#929292", "#000000", "#ff69b4", "#00ffff", "#8a2be2", "#ffd700",
+        "#00ff00", "#ff6347", "#4682b4", "#a52a2a", "#deb887", "#5f9ea0",
+        "#e9967a", "#b22222", "#228b22", "#00ced1", "#ffb6c1", "#7fff00"
+      ],
+      copied: false,
+      copiedFailed: false,
+      // App state
+      loading: true,
+      options: false,
+      ignore: false,
+      demo: false,
+      presetFilename: "preset.json",
+    };
+  },
+  computed: {
+    viewBox: function () {
+      return `0 0 ${this.size * this.x} ${this.size * this.y}`;
+    },
+    viewBoxPallete: function () {
+      return `0 0 ${this.size * this.xPallete} ${this.size * this.yPallete}`;
+    },
+    //--------------------------------//
+    // Convert fill to correct array for JSON API
+    //--------------------------------//
+    seg: function () {
+      let format = this.fill
+        .map((i) => `"${i}"`)
+        .join(",")
+        .replaceAll("#", "");
+
+      return format;
+    },
+    // END Convert fill to correct array for JSON API --------------//
+    setTimer: function () {
+      let string = ``;
+      if (this.timer > 0) {
+        string = `"nl": {"on": true, "dur": ${this.timer}},`;
+      }
+      return string;
+    },
+    //--------------------------------//
+    // Create JSON body for POST
+    //--------------------------------//
+    json: function () {
+      return `{"on": true,"bri": 128,${this.setTimer} "v": true, "seg": {"i":[${this.seg}]}}`;
+    }
+    // END Create JSON body for POST --------------//
+  },
+  methods: {
+    clear: function () {
+      this.fill = [];
+      localStorage.fill = this.fill.toString();
+      this.setupColors();
+    },
+    //--------------------------------//
+    // Create grid and set default color to off
+    //--------------------------------//
+    setupColors: function () {
+      let color = `#000000`;
+      let local = [];
+      if (localStorage.fill) {
+        local = localStorage.fill.split(',');
+      }
+      console.warn(`${this.x} ${this.y}`);
+      for (let y = 0; y < this.y; y++) {
+        for (let x = 0; x < this.x; x++) {
+          this.fill.push(local[x + this.x * y] !== "" ? local[x + this.x * y] : color);
+        }
+      }
+    },
+    // END Create grid and set default color to off --------------//
+    // Update 🎨 pallete history
+    changeColor: function (e) {
+      this.color = e.target.getAttribute("fill");
+    },
+    //--------------------------------//
+    // 🖌️ Paint controls
+    //--------------------------------//
+    // Check if ✊  dragging
+    dragColor: function (e) {
+      // Support both mouse and touch events
+      if (this.isMouseDown) {
+        // For touch events, find the element under the finger
+        if (e.type === 'touchmove') {
+          const touch = e.touches[0];
+          const svg = e.target.closest('svg');
+          if (svg) {
+            const pt = svg.createSVGPoint();
+            pt.x = touch.clientX;
+            pt.y = touch.clientY;
+            const element = document.elementFromPoint(pt.x, pt.y);
+            // Only color rects in the matrix
+            if (element && element.tagName === 'rect' && element.hasAttribute('data-number')) {
+              this.setColor({ target: element });
+            }
+          }
+        } else {
+          this.setColor(e);
+        }
+      }
+    },
+    mouseDown: function (e) {
+      this.isMouseDown = true;
+      // Start live update timer
+      if (!this.liveUpdateTimer) {
+        this.liveUpdateTimer = setInterval(() => {
+          this.post();
+        }, 100);
+      }
+    },
+    mouseUp: function (e) {
+      this.isMouseDown = false;
+      // Stop live update timer
+      if (this.liveUpdateTimer) {
+        clearInterval(this.liveUpdateTimer);
+        this.liveUpdateTimer = null;
+      }
+      this.post(); // Final update
+    },
+    changeColor: function (e) {
+      this.color = e.target.getAttribute("fill");
+    },
+    // 🪣 fill color
+    setColor: function (e) {
+      e.target.setAttribute("fill", this.color);
+      this.fill[e.target.dataset.number] = this.color;
+      localStorage.fill = this.fill.toString();
+    },
+    // 🖱️ Right click remove color
+    rightClick: function (e) {
+      this.fill[e.target.dataset.number] = '#000000';
+      e.target.setAttribute("fill", '#000000');
+      localStorage.fill = this.fill.toString();
+    },
+    // END 🖌️ Paint controls --------------//
+
+    //--------------------------------//
+    // 🐵 Send API request
+    //--------------------------------//
+    // POST request
+    post: function () {
+      if (!this.ignore) {
+        fetch(this.url, {
+          method: "POST",
+          body: this.json,
+          headers: {
+            "Content-type": "application/json; charset=UTF-8"
+          }
+        })
+          .then((response) => {
+            return response.json();
+          })
+          .then((data) => {
+            console.log(data);
+          })
+          .catch((error) => {
+            console.error("Fetch Error:", error);
+          });
+      }
+
+    },
+    // GET request
+    get: function () {
+      fetch(this.url, {
+        method: "GET",
+        headers: {
+          "Content-type": "application/json; charset=UTF-8"
+        }
+      })
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          console.log(data);
+          const url = new URL(this.url);
+          const domain = `${url.protocol}//${url.hostname}`;
+          this.wledUrl = domain;
+          this.x = data.info.leds.matrix.w;
+          this.y = data.info.leds.matrix.h;
+          localStorage.x = this.x;
+          localStorage.y = this.y;
+          this.options = false;
+          this.loading = false;
+          if (!localStorage.fill) {
+            this.setupColors();
+          }
+        })
+        .catch((error) => {
+          this.options = true;
+          // this.options = true;
+          console.error("Fetch Error:", error);
+        });
+    },
+    // END 🐵 Send API request --------------//
+    //--------------------------------//
+    // Copy preset
+    //--------------------------------//
+    copy: function () {
+
+      if (location.protocol !== 'https:') {
+        const element = this.$refs.copy;
+        const textToCopy = element.innerText;
+
+        const textarea = document.createElement('textarea');
+        textarea.value = textToCopy;
+        document.body.appendChild(textarea);
+        textarea.select();
+
+        try {
+          document.execCommand('copy');
+          this.copied = true;
+          console.log('Text copied to clipboard');
+        } catch (err) {
+          this.copiedFailed = true;
+          console.error('Unable to copy text to clipboard', err);
+        } finally {
+          document.body.removeChild(textarea);
+        }
+      } else {
+        const copyText = this.$refs.copy.innerText;
+        navigator.clipboard.writeText(copyText).then(() => {
+          this.copied = true;
+        }, function (err) {
+          this.copiedFailed = true;
+          console.error("Failed to copy text: ", err);
+        });
+      }
+    },
+    savePreset: function () {
+      // Save the current preset JSON to a file
+      const jsonString = this.json;
+      const blob = new Blob([jsonString], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = this.presetFilename && this.presetFilename.trim() ? this.presetFilename.trim() : "preset.json";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    },
+    triggerFileInput: function () {
+      // Find the file input and trigger click
+      this.$el.querySelector('input[type="file"]').click();
+    },
+    loadPresetFromFile: function (event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const preset = JSON.parse(e.target.result);
+          // Apply loaded preset to app state
+          if (typeof preset === 'object') {
+            // Example: update fill, timer, x, y if present
+            if (preset.seg && Array.isArray(preset.seg.i)) {
+              this.fill = preset.seg.i.map(c => '#' + c.replace(/^#/, ''));
+            }
+            if (preset.nl && typeof preset.nl.dur === 'number') {
+              this.timer = preset.nl.dur;
+            }
+            if (typeof preset.v === 'boolean') {
+              // Optionally handle 'v' field
+            }
+            // Optionally update x, y if present in preset
+            // (add more fields as needed)
+          }
+        } catch (err) {
+          alert('Invalid preset file.');
+        }
+      };
+      reader.readAsText(file);
+    },
+    // END Copy preset --------------//
+    ignoreNotice: function () {
+      this.ignore = true;
+      this.loading = false;
+      this.options = false;
+      this.setupColors();
+    },
+    mapUrlParameters: function () {
+      const params = new URLSearchParams(window.location.search);
+      params.forEach((value, key) => {
+        if (Object.prototype.hasOwnProperty.call(this, key)) {
+          this[key] = value;
+        }
+      });
+    }
+  },
+  watch: {
+    url: function (newData) {
+      this.get();
+    },
+    x: function (newData) {
+      this.loading = false;
+      this.fill = [];
+      localStorage.x = this.x;
+      this.setupColors();
+    },
+    y: function (newData) {
+      this.loading = false;
+      this.fill = [];
+      localStorage.y = this.y;
+      this.setupColors();
+    },
+    //--------------------------------//
+    // 💾 Save everything to local storage
+    //--------------------------------//
+    color: function (newColor) {
+      // Update 🎨 palette history to always use all slots (24 for 6x4)
+      const maxPalette = this.xPallete * this.yPallete;
+      // Remove if already present
+      let idx = this.historyPalette.indexOf(this.color);
+      if (idx !== -1) this.historyPalette.splice(idx, 1);
+      // Add to front
+      this.historyPalette.unshift(this.color);
+      // Trim to fixed length
+      if (this.historyPalette.length > maxPalette) {
+        this.historyPalette = this.historyPalette.slice(0, maxPalette);
+      }
+      localStorage.historyPalette = this.historyPalette.toString();
+      localStorage.color = newColor;
+    },
+    timer: function (newData) {
+      localStorage.timer = newData;
+    }
+    // END 💾 Save everything to local storage --------------//
+  },
+  mounted() {
+    const host = window.location.host;
+    this.url = `http://${host}/json`;
+    if (host === 'mvaneijgen.nl') {
+      this.ignoreNotice();
+      this.demo = true;
+    }
+    //--------------------------------//
+    // 💾 Get everything from local storage
+    //--------------------------------//
+    // Controls to local storage
+    if (localStorage.color) this.color = localStorage.color;
+    if (localStorage.historyPalette) this.historyPalette = localStorage.historyPalette.split(",");
+    if (localStorage.timer) this.timer = localStorage.timer;
+
+    // Matrix to local storage
+    if (localStorage.x) this.x = Number(localStorage.x);
+    if (localStorage.y) this.y = Number(localStorage.y);
+    // END 💾 Get everything from local storage  --------------//
+    this.mapUrlParameters(); // Set URL parameters to data attr
+  },
+  // created() {
+  //   const host = window.location.host;
+
+  // }
+};
+
+createApp(App).mount("#app");
+</script>
+</script>
+    <script>
+
+      // Allow touchmove for drawing, but prevent scrolling outside the drawing area
+      // Only prevent scrolling if the touch is not on #app or its children
+      document.body.addEventListener('touchmove', function(e) {
+        // If the event target is outside #app, prevent scrolling
+        var app = document.getElementById('app');
+        if (!app || !app.contains(e.target)) {
+          e.preventDefault();
+        }
+        // Otherwise, allow touchmove for drawing
+      }, { passive: false });
+
+      // Dynamically set #app height to visible viewport (accounts for mobile address bar)
+      function setAppHeight() {
+        var app = document.getElementById('app');
+        if (app) {
+          app.style.height = window.innerHeight + 'px';
+        }
+      }
+      window.addEventListener('resize', setAppHeight);
+      window.addEventListener('orientationchange', setAppHeight);
+      window.addEventListener('DOMContentLoaded', setAppHeight);
+      setAppHeight();
+    </script>
+  </body>
+</html>
